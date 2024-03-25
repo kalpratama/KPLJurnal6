@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 
 public class SayaTubeVideo
 {
@@ -23,15 +24,13 @@ public class SayaTubeVideo
             throw new ArgumentException("Judul video harus memiliki panjang maksimal 100 karakter dan tidak null.");
         }
 
-        // Precondition: Input penambahan play count maksimal 10.000.000 per panggilan method-nya
-        if (count < 0 || count > 10000000)
+        if (count < 0 || count > 25000000)
         {
-            throw new ArgumentOutOfRangeException("Jumlah penambahan play count harus antara 0 dan 10.000.000.");
+            throw new ArgumentOutOfRangeException("Jumlah penambahan play count harus antara 0 dan 25.000.000.");
         }
 
         try
         {
-            // Exception Handling: Pastikan jumlah penambahan play count tidak melebihi batas tertinggi integer (overflow)
             checked
             {
                 playCount += count;
@@ -56,15 +55,36 @@ public class SayaTubeUser
     private int id;
     private List<SayaTubeVideo> UploadedVideos;
     public string userName;
+    private string title;
 
     public SayaTubeUser(string userName)
     {
         userName = ("Kal_El");
     }
 
-    public static int GetTotalVideoPlayCount()
+    public static void GetTotalVideoPlayCount(int count)
     {
-        return 0;
+        if (userName == null || username.Length > 100)
+        {
+            throw new ArgumentException("User Name harus memiliki panjang maksimal 100 karakter dan tidak null.");
+        }
+
+        if (count < 0 || count > 25000000)
+        {
+            throw new ArgumentOutOfRangeException("Jumlah penambahan play count harus antara 0 dan 25.000.000.");
+        }
+
+        try
+        {
+            checked
+            {
+                playCount += count;
+            }
+        }
+        catch (OverflowException)
+        {
+            Console.WriteLine("Error: Overflow terjadi saat menambahkan play count.");
+        }
     }
 
     public void AddVideo(SayaTubeVideo video)
@@ -86,16 +106,13 @@ public class SayaTubeUser
     {
         SayaTubeUser name = new SayaTubeUser("KalEl");
 
-        // Membuat objek SayaTubeVideo dengan judul video
         SayaTubeVideo video = new SayaTubeVideo("TWICE - What Is Love M/V");
 
-        // Memanggil method IncreasePlayCount untuk menguji prekondisi dan exception
         for (int i = 0; i < 5; i++)
         {
-            video.IncreasePlayCount(2000000); // Menaikkan play count sebanyak 2.000.000 per panggilan
+            video.IncreasePlayCount(2000000); 
         }
         
-        // Memanggil method PrintVideoDetails untuk mencetak detail video
         video.PrintVideoDetails();
 
         Console.WriteLine("                    ");
